@@ -2,6 +2,10 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { OWASP_CATEGORIES } from "@/lib/types";
 
+// Force dynamic rendering — this page queries Supabase at request time,
+// so it must not be statically pre-rendered at build time
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const supabase = createClient();
 
