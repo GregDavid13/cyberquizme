@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS flashcards (
   real_world_example JSONB     DEFAULT '{}',
   code_example     JSONB       DEFAULT '{}',
   mitigation       TEXT[]      DEFAULT '{}',
-  references       TEXT[]      DEFAULT '{}',
+  resource_links   TEXT[]      DEFAULT '{}',  -- renamed: 'references' is a reserved word in PostgreSQL
   created_at       TIMESTAMPTZ DEFAULT NOW()
 );
 

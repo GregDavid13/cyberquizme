@@ -25,7 +25,7 @@ export interface Flashcard {
   real_world_example:  RealWorldExample;
   code_example:        CodeExample;
   mitigation:          string[];
-  references:          string[];
+  resource_links:      string[];   // DB column — 'references' is reserved in PostgreSQL
   created_at?:         string;
 }
 

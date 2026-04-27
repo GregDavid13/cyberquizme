@@ -53,8 +53,15 @@ if (!fs.existsSync(CARDS_FILE)) {
   process.exit(1);
 }
 
-const { cards } = JSON.parse(fs.readFileSync(CARDS_FILE, "utf8"));
-console.log(`📦  Loaded ${cards.length} cards from ${path.basename(CARDS_FILE)}`);
+const { cards: rawCards } = JSON.parse(fs.readFileSync(CARDS_FILE, "utf8"));
+console.log(`📦  Loaded ${rawCards.length} cards from ${path.basename(CARDS_FILE)}`);
+
+// Map JSON field names → DB column names
+// 'references' is a reserved word in PostgreSQL, so the column is named 'resource_links'
+const cards = rawCards.map(({ references, ...rest }) => ({
+  ...rest,
+  resource_links: references ?? [],
+}));
 
 // ── Upsert into Supabase ──────────────────────────────────────────────
 async function seed() {
