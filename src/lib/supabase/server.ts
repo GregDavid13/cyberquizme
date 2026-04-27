@@ -1,8 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-// Explicit type required — TypeScript strict mode can't infer cookiesToSet
-// from @supabase/ssr's generic context in Next.js 14 App Router
 type CookieToSet = {
   name: string;
   value: string;
@@ -21,8 +19,8 @@ type CookieToSet = {
 export function createClient() {
   const cookieStore = cookies();
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
@@ -35,7 +33,6 @@ export function createClient() {
             );
           } catch {
             // Called from a Server Component — safe to ignore.
-            // Middleware keeps the session refreshed.
           }
         },
       },

@@ -1,8 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Explicit type required — TypeScript strict mode can't infer cookiesToSet
-// from @supabase/ssr's generic context
 type CookieToSet = {
   name: string;
   value: string;
@@ -22,8 +20,8 @@ export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
@@ -46,7 +44,6 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect /admin — redirect unauthenticated users to login
   if (request.nextUrl.pathname.startsWith("/admin") && !user) {
     return NextResponse.redirect(
       new URL("/auth/login?next=/admin", request.url)
